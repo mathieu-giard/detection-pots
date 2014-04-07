@@ -15,7 +15,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		mainAlgo("triste");
+		mainAlgo("img-carre2.png");
 	}
 
 	static private void mainAlgo(String path) {
@@ -26,11 +26,20 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
+		// POUR LES TEST
+		//TSL(img,246,348);
+		//TSL(img,272,377);
+		//TSL(img,250,355);
+		
+		
+		
 		if (img != null) {
-			Pt[][] tab = Selection.selec(img, .01D, .99D, .01D, .99D, .01D,
-					.99D);
+			Pt[][] tab = Selection.selec(img, 0.01, 0.9, 0, 1.2, 0, 1.2);
 
+			//ecrire image booleenne
+			PrintBooleanImage.print(tab, "imBool.png");
+			
 			CompoConnexe<Pt> cc = new CompoConnexe<Pt>(tab);
 			ArrayList<ArrayList<Pt>> compoCo = cc.getCompo();
 
@@ -57,7 +66,7 @@ public class Main {
 					125 + (-1) ^ k * 10 * k % 255, 255 - 20 * k % 255);
 			int rgb = color.getRGB();
 			for (Pt pt : alpt)
-				img.setRGB(pt.getX(), pt.getY(), rgb);
+				img.setRGB(pt.getX() * Selection.SIZEFACTOR, pt.getY() * Selection.SIZEFACTOR, rgb);
 
 			File outputfile = new File("tristou");
 			try {
@@ -67,4 +76,18 @@ public class Main {
 			}
 		}
 	}
+
+	static public void TSL(BufferedImage img, int x, int y) {
+		Color c = new Color(img.getRGB(x, y));// prendre des valeurs RGB
+		// de chaque pixel
+		int r = c.getRed();
+		int g = c.getGreen();
+		int b = c.getBlue();
+
+		float[] hsb = Color.RGBtoHSB(r, g, b, null);
+		System.out.println("La teinte est : " + hsb[0]
+				+ ", et la saturation est : " + hsb[1]
+				+ ", et la luminance est : " + hsb[2]);
+	}
+
 }

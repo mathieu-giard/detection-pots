@@ -16,6 +16,7 @@ public class CompoConnexe<T extends Cross> {
 		for (Cross cross : list) {
 			tab[cross.getX()][cross.getY()] = cross;
 		}
+		
 	}
 
 	public ArrayList<ArrayList<T>> getCompo() {
@@ -49,23 +50,29 @@ public class CompoConnexe<T extends Cross> {
 			}
 		}
 
-		ArrayList<ArrayList<T>> retour = new ArrayList<ArrayList<T>>();
+		ArrayList<ArrayList<T>> retourGeant = new ArrayList<ArrayList<T>>();
 		int sizeRetour = listeEqui.size();
 		for (int i = 0; i < sizeRetour; i++)
-			retour.add(new ArrayList<T>());
-		
+			retourGeant.add(new ArrayList<T>());
+
 		// ENLEVER LE COMPO DE TROP PETITE TAILLE
-		
+
 		for (int y = 0; y < maxY; y++) {
 			for (int x = 0; x < maxX; x++) {
 				Cross cross = tab[x][y];
 				if (cross.getNb() != -1) {
 					int nbListe = listeEqui.getNumeroListe(cross.getNb());
-					retour.get(nbListe).add((T) cross);
+					retourGeant.get(nbListe).add((T) cross);
 				}
 			}
 		}
 
-		return retour;
+		ArrayList<ArrayList<T>> retourNain = new ArrayList<ArrayList<T>>();
+		for (ArrayList<T> alt : retourGeant) {
+			if (alt.size() > 50)
+				retourNain.add(alt);
+		}
+
+		return retourNain;
 	}
 }

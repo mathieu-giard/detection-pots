@@ -46,7 +46,7 @@ public class Signature {
 	public double compareTo(Signature sig, int k) {
 		double retour = 0;
 		for (int theta = 0; theta < 360; theta++)
-			retour += this.get(theta + k) - sig.get(theta);
+			retour += (this.get(theta + k) - sig.get(theta))*(this.get(theta + k) - sig.get(theta)) ;
 		return retour / 360;
 	}
 
