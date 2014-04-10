@@ -15,6 +15,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+
+		
 		mainAlgo("img-carre2.png");
 	}
 
@@ -28,14 +30,26 @@ public class Main {
 		}
 		
 		// POUR LES TEST
-		//TSL(img,246,348);
-		//TSL(img,272,377);
-		//TSL(img,250,355);
+			System.out.println("points du pots");
+			TSL(img,331,471);
+			TSL(img,360,452);
+			TSL(img,372,510);
+			System.out.println("points de la plante");
+			TSL(img,397,246);
+			TSL(img,358,257);
+			System.out.println("points du mur");
+			TSL(img,571,501);
+			System.out.println("points du pots qui n'ont bizarrement pas été sélectionnés");
+			TSL(img,301,466);
+			TSL(img,366,501);
+			TSL(img,345,521);
+			
+			
 		
 		
 		
 		if (img != null) {
-			Pt[][] tab = Selection.selec(img, 0.01, 0.9, 0, 1.2, 0, 1.2);
+			Pt[][] tab = Selection.selec(img, 0.88, 1.0, 0.05, 0.4, 0.20, 0.5);
 
 			//ecrire image booleenne
 			PrintBooleanImage.print(tab, "imBool.png");
@@ -52,6 +66,8 @@ public class Main {
 			ArrayList<Double> coefficients = cs.compare();
 
 			System.out.println(coefficients);
+			
+			
 		}
 	}
 
@@ -68,7 +84,7 @@ public class Main {
 			for (Pt pt : alpt)
 				img.setRGB(pt.getX() * Selection.SIZEFACTOR, pt.getY() * Selection.SIZEFACTOR, rgb);
 
-			File outputfile = new File("tristou");
+			File outputfile = new File("CompoCoDeTest");
 			try {
 				ImageIO.write(img, "png", outputfile);
 			} catch (IOException e) {

@@ -5,7 +5,7 @@ import pactutils.Pt;
 
 public class Selection {
 	
-	public static int SIZEFACTOR = 2;
+	public static int SIZEFACTOR = 1;
 	
 	static public Pt[][] selec(BufferedImage img, double seuilTinf, double seuilTsup,
 			double seuilSinf, double seuilSsup, double seuilLinf,

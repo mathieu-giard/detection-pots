@@ -69,7 +69,7 @@ public class CompoConnexe<T extends Cross> {
 
 		ArrayList<ArrayList<T>> retourNain = new ArrayList<ArrayList<T>>();
 		for (ArrayList<T> alt : retourGeant) {
-			if (alt.size() > 50)
+			if (alt.size() > 1000)
 				retourNain.add(alt);
 		}
 

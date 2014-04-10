@@ -17,6 +17,7 @@ public class PrintBooleanImage {
 			e.printStackTrace();
 			System.out.println("chemin n'existe pas");
 		}
+		
 
 		
 		for (int x = 0; x < tab.length; x++) {
@@ -33,9 +34,9 @@ public class PrintBooleanImage {
 			}
 
 		}
-		
+		File outputfile = new File(filePath);
 		try {
-			ImageIO.write(img, "png", new File(filePath));
+			ImageIO.write(img, "png", outputfile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
