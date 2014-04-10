@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import pactutils.Image;
 import pactutils.Pt;
 import pactutils.Pt;
 import pactutils.Signature;
@@ -29,24 +30,16 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		// POUR LES TEST
-			System.out.println("points du pots");
-			TSL(img,331,471);
-			TSL(img,360,452);
-			TSL(img,372,510);
-			System.out.println("points de la plante");
-			TSL(img,397,246);
-			TSL(img,358,257);
-			System.out.println("points du mur");
-			TSL(img,571,501);
-			System.out.println("points du pots qui n'ont bizarrement pas été sélectionnés");
-			TSL(img,301,466);
-			TSL(img,366,501);
-			TSL(img,345,521);
+		// On retravaille l'image avant le traitement
+		Image image = new Image(img);
+		System.out.println("Début de normalisation");
+		image.Normalize();
+		System.out.println("Début de sauvegarde");
+		image.Save();
 			
 			
 		
-		
+		/*
 		
 		if (img != null) {
 			Pt[][] tab = Selection.selec(img, 0.88, 1.0, 0.05, 0.4, 0.20, 0.5);
@@ -67,8 +60,9 @@ public class Main {
 
 			System.out.println(coefficients);
 			
-			
+		
 		}
+			// */
 	}
 
 	// pour les test
@@ -93,17 +87,5 @@ public class Main {
 		}
 	}
 
-	static public void TSL(BufferedImage img, int x, int y) {
-		Color c = new Color(img.getRGB(x, y));// prendre des valeurs RGB
-		// de chaque pixel
-		int r = c.getRed();
-		int g = c.getGreen();
-		int b = c.getBlue();
-
-		float[] hsb = Color.RGBtoHSB(r, g, b, null);
-		System.out.println("La teinte est : " + hsb[0]
-				+ ", et la saturation est : " + hsb[1]
-				+ ", et la luminance est : " + hsb[2]);
-	}
 
 }
