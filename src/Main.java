@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import pactutils.Image;
 import pactutils.Pt;
 import pactutils.Pt;
+import pactutils.Rectangle;
 import pactutils.Signature;
 import compo_connexe.CompoConnexe;
 
@@ -18,7 +19,7 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		
-		mainAlgo("img-carre2.png");
+		mainAlgo("img-2014_03_12,10_05.png");
 	}
 
 	static private void mainAlgo(String path) {
@@ -36,30 +37,48 @@ public class Main {
 		image.Normalize();
 		System.out.println("Début de sauvegarde");
 		image.Save();
-			
+		img=image.getImg();
+		image.afficheTSL();
 			
 		
-		/*
 		
 		if (img != null) {
-			Pt[][] tab = Selection.selec(img, 0.88, 1.0, 0.05, 0.4, 0.20, 0.5);
+			// faire la segmentation
+			System.out.println("début de segmentation");
+			Pt[][] tab = Selection.selec(img, 0.05, 0.2, 0.20, 0.45, 0.45, 0.8);
 
 			//ecrire image booleenne
 			PrintBooleanImage.print(tab, "imBool.png");
 			
+			// faire les composantes connexes
+			System.out.println("Début de composantes connexes");
 			CompoConnexe<Pt> cc = new CompoConnexe<Pt>(tab);
 			ArrayList<ArrayList<Pt>> compoCo = cc.getCompo();
 
 			// pour les test
-			colorCompo(img, compoCo, path);
+			colorCompo(img, compoCo, path);			
 
+			// faire la signature
+			System.out.println("Début signature");
 			ArrayList<Signature> signatures = Signe.signe(compoCo);
 
+			// trouver les coefficients de corrélation
 			CompareSig cs = new CompareSig(signatures);
 			ArrayList<Double> coefficients = cs.compare();
 
 			System.out.println(coefficients);
 			
+			// selectionner le plus haut
+			int k = cs.NumDuMaxDesCoef(coefficients);
+			System.out.println(coefficients.get(k));
+			
+			// en déduire le rectangle correspondant
+			Rectangle Rec= new Rectangle(compoCo.get(k));
+			
+			// on verifie visuellement que ce soit le bon:
+			image.DessinerLeRectangle(Rec);
+			image.Save(); // à faire plus tard: modif save pour que l'image ne soit pas ds img normalisée
+				
 		
 		}
 			// */

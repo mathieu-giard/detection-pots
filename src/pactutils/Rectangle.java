@@ -1,6 +1,7 @@
 package pactutils;
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Rectangle implements Serializable{
 	/**
@@ -20,6 +21,26 @@ public class Rectangle implements Serializable{
 		this.p4 = p4;
 		this.nom = nom;
 	}
+	
+	public Rectangle(ArrayList<Pt> list){
+		int xmax =0; int xinf=Integer.MAX_VALUE; int yinf=Integer.MAX_VALUE; 
+		for (Pt pt: list){
+			int x = pt.getX();
+			int y = pt.getY();
+			if(x<xinf)
+				xinf=x;
+			if (x>xmax)
+				xmax=x;
+			if(y<yinf)
+				yinf=y;
+		}
+		this.p1= new Point(xinf,0);
+		this.p2= new Point(xmax,0);
+		this.p3= new Point(xinf,yinf);
+		this.p4= new Point(xmax,yinf);
+		
+	}
+	
 
 	public Point getP1(){
 		return p1;
@@ -42,4 +63,6 @@ public class Rectangle implements Serializable{
 	public void setNom(String value){
 		this.nom = value;
 	}
+
 }
+

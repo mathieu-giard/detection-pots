@@ -10,6 +10,7 @@ public class CompareSig {
 		this.signatures = signatures;
 	}
 
+	
 	public ArrayList<Double> compare() {
 		ArrayList<Double> retour = new ArrayList<Double>();
 
@@ -23,15 +24,32 @@ public class CompareSig {
 				double thisDiff = signature.compareTo(temoin, k);
 				if (thisDiff < coefDiff)
 					coefDiff = thisDiff;
-				double thisDiff2 = signature.compareSig(temoin, k);
+				double thisDiff2 = signature.compareSig(temoin, k);  // inutile les deux donnent les même résultats pk pas les soustraire?
 				if(thisDiff2>coefDiff2){
 					coefDiff2 = thisDiff2;
 				}
 			}
-			retour.add(coefDiff);
-			retour.add(coefDiff2);
+			retour.add(coefDiff-coefDiff2);
+			//retour.add(coefDiff2);
 		}
 
 		return retour;
 	}
+	
+	public int NumDuMaxDesCoef( ArrayList<Double> coefficients){
+		int i = 0; int j=0;
+		double d = 0;
+		for ( Double coef : coefficients){
+			if(coef>d){
+				d=coef;
+				j=i;
+			}	
+			i=i+1;
+			
+		}
+		return j;
+	}
+	
+	
+	
 }
