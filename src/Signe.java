@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import pactutils.*;
 
 public class Signe {
+	
 	static public ArrayList<Signature> signe(ArrayList<ArrayList<Pt>> compoCo) {
 		ArrayList<Signature> retour = new ArrayList<Signature>();
 		for (ArrayList<Pt> composante : compoCo) {

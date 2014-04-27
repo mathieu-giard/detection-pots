@@ -40,9 +40,17 @@ public class Signature {
 
 		// on normalise
 		for (int theta = 0; theta < 360; theta++)
-			signature[theta] = Math.abs( signature[theta] - rhoMoyen); //on divisait par rho moy 
+			signature[theta] =  signature[theta] - rhoMoyen; // on met une val abs?? Math.abs()
 	}
 
+	public double Moyenne(){
+		double rhoMoyen = 0;
+		for (double rho : this.signature)
+			rhoMoyen += rho;
+		rhoMoyen = rhoMoyen / 360;
+		return rhoMoyen;
+	}
+	
 	public double compareTo(Signature sig, int k) {
 		double retour = 0;
 		for (int theta = 0; theta < 360; theta++)
@@ -52,7 +60,10 @@ public class Signature {
 	
 	// Nouvelle méthode de comparaison de la signegnature
 	public double compareSig(Signature sig ,int k){
-		double c = 0;
+		double ck = 0;
+		
+		double fMoy = this.Moyenne();
+		double gMoy = sig.Moyenne();
 		
 		double sigma1 = 0; // ecart type de la signature
 		for (int i = 0; i < 360; i++) {
@@ -69,10 +80,14 @@ public class Signature {
 		sigma2 = Math.sqrt(sigma2);
 		
 		for(int i=0 ; i<360; i++){
-			c = c + (this.get(i + k) )* (sig.get(i) );
+			ck = ck + (this.get(i + k) - fMoy )* (sig.get(i) - gMoy );
 		}
-		c=c/(sigma1*sigma2);
-		return c;
+		ck=ck/(sigma1*sigma2);
+		return ck;
 	}
+
+	
+
+
 
 }

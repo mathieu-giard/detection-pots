@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -105,6 +106,17 @@ public class Image {
 		}
 	}
 	
+	public void SaveImFinale(){
+		
+		File outputfile = new File("ImageFinale");
+		try {
+			ImageIO.write(img, "png", outputfile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 	public void DessinerLeRectangle(Rectangle Rec){
 		int xmin = (int) Rec.getP3().getX();
@@ -127,4 +139,10 @@ public class Image {
 		}
 	}
 	
+	public void DessinerLeSRectangleS(ArrayList<Rectangle> list){
+		for (Rectangle rec : list){
+			this.DessinerLeRectangle(rec);
+		}
+	}
+
 }

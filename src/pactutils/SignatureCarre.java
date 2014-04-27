@@ -11,7 +11,7 @@ public class SignatureCarre extends Signature {
 			this.add(-500,i);
 		}
 		
-		this.normalise();
+		//this.normalise();
 	}
 	
 	private void add(int x, int y){

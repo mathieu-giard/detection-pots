@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import pactutils.Pt;
+import pactutils.Rectangle;
 import pactutils.Signature;
 import pactutils.SignatureCarre;
 
@@ -17,23 +19,33 @@ public class CompareSig {
 		SignatureCarre temoin = new SignatureCarre();
 
 		for (Signature signature : signatures) {
-			signature.normalise();
-			double coefDiff = Double.MAX_VALUE;
-			double coefDiff2 = 0;
+			//signature.normalise();
+	double coefDiff = 0;
 			for (int k = 0; k < 360; k++) {
-				double thisDiff = signature.compareTo(temoin, k);
-				if (thisDiff < coefDiff)
-					coefDiff = thisDiff;
-				double thisDiff2 = signature.compareSig(temoin, k);  // inutile les deux donnent les même résultats pk pas les soustraire?
-				if(thisDiff2>coefDiff2){
-					coefDiff2 = thisDiff2;
-				}
-			}
-			retour.add(coefDiff-coefDiff2);
-			//retour.add(coefDiff2);
+				
+				double thisDiff = signature.compareSig(temoin, k);  
+				coefDiff = Math.max(coefDiff, thisDiff);
+				}	
+			
+			retour.add(coefDiff);
+			
 		}
 
 		return retour;
+	}
+	
+	public ArrayList<Rectangle> EstSelec(ArrayList<Double> list ,int seuil, ArrayList<ArrayList<Pt>> compoCo){
+		ArrayList<Rectangle> result = new ArrayList<Rectangle>();
+		int i =0;
+		for (double d : list){
+			if ( d<seuil){ // bizarrement il faut mettre inf
+				Rectangle R = new Rectangle(compoCo.get(i));
+				result.add(R);
+			}
+			i=i+1;
+		}
+		
+		return result;
 	}
 	
 	public int NumDuMaxDesCoef( ArrayList<Double> coefficients){
@@ -50,6 +62,19 @@ public class CompareSig {
 		return j;
 	}
 	
+	public int NumDuMinDesCoef( ArrayList<Double> coefficients){
+		int i = 0; int j=0;
+		double d = Double.MAX_VALUE;
+		for ( Double coef : coefficients){
+			if(coef<d){
+				d=coef;
+				j=i;
+			}	
+			i=i+1;
+			
+		}
+		return j;
+	}
 	
 	
 }

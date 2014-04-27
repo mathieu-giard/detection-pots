@@ -8,18 +8,23 @@ import javax.imageio.ImageIO;
 
 import pactutils.Image;
 import pactutils.Pt;
-import pactutils.Pt;
 import pactutils.Rectangle;
 import pactutils.Signature;
+import seuils.*;
+
 import compo_connexe.CompoConnexe;
 
 public class Main {
+	private static Seuil seuil = null;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		// mainAlgo("img-carre2.png");
 		
-		mainAlgo("img-2014_03_12,10_05.png");
+
+		mainAlgo("img-patchs2.png");
+
 	}
 
 	static private void mainAlgo(String path) {
@@ -30,34 +35,37 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		// On retravaille l'image avant le traitement
 		Image image = new Image(img);
 		System.out.println("Début de normalisation");
 		image.Normalize();
 		System.out.println("Début de sauvegarde");
 		image.Save();
-		img=image.getImg();
+		img = image.getImg();
 		image.afficheTSL();
-			
-		
+
 		
 		if (img != null) {
 			// faire la segmentation
 			System.out.println("début de segmentation");
-			Pt[][] tab = Selection.selec(img, 0.05, 0.2, 0.20, 0.45, 0.45, 0.8);
-
-			//ecrire image booleenne
+			Pt[][] tab;
+			if (seuil == null)
+				tab = Selection.selec(img, 0.85, 1, 0.05, 0.25, 0.45, 0.8);
+			else
+				tab = Selection.selec(img, seuil);
+			// ecrire image booleenne
 			PrintBooleanImage.print(tab, "imBool.png");
-			
+
 			// faire les composantes connexes
 			System.out.println("Début de composantes connexes");
 			CompoConnexe<Pt> cc = new CompoConnexe<Pt>(tab);
 			ArrayList<ArrayList<Pt>> compoCo = cc.getCompo();
 
 			// pour les test
-			colorCompo(img, compoCo, path);			
+			colorCompo(img, compoCo, path);
 
+			
 			// faire la signature
 			System.out.println("Début signature");
 			ArrayList<Signature> signatures = Signe.signe(compoCo);
@@ -67,21 +75,16 @@ public class Main {
 			ArrayList<Double> coefficients = cs.compare();
 
 			System.out.println(coefficients);
-			
-			// selectionner le plus haut
-			int k = cs.NumDuMaxDesCoef(coefficients);
-			System.out.println(coefficients.get(k));
-			
-			// en déduire le rectangle correspondant
-			Rectangle Rec= new Rectangle(compoCo.get(k));
-			
+
+			// selectionner et en déduire le rectangle correspondant
+			ArrayList<Rectangle> Rec = cs.EstSelec(coefficients, 12, compoCo);
+
 			// on verifie visuellement que ce soit le bon:
-			image.DessinerLeRectangle(Rec);
-			image.Save(); // à faire plus tard: modif save pour que l'image ne soit pas ds img normalisée
-				
-		
+			image.DessinerLeSRectangleS(Rec);
+			image.SaveImFinale();
+		 
 		}
-			// */
+		// */
 	}
 
 	// pour les test
@@ -95,7 +98,8 @@ public class Main {
 					125 + (-1) ^ k * 10 * k % 255, 255 - 20 * k % 255);
 			int rgb = color.getRGB();
 			for (Pt pt : alpt)
-				img.setRGB(pt.getX() * Selection.SIZEFACTOR, pt.getY() * Selection.SIZEFACTOR, rgb);
+				img.setRGB(pt.getX() * Selection.SIZEFACTOR, pt.getY()
+						* Selection.SIZEFACTOR, rgb);
 
 			File outputfile = new File("CompoCoDeTest");
 			try {
@@ -105,6 +109,5 @@ public class Main {
 			}
 		}
 	}
-
 
 }
