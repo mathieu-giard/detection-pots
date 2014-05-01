@@ -1,6 +1,9 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -10,7 +13,6 @@ import pactutils.Pt;
 import pactutils.Rectangle;
 import pactutils.Signature;
 import seuils.*;
-
 import compo_connexe.CompoConnexe;
 
 public class MainAnatole {
@@ -18,18 +20,35 @@ public class MainAnatole {
 
 	public static void main(String[] args) {
 		
-		if(args[1]=="jaune")
-			seuil = new SeuilJaune();
-		
+		ArrayList<Rectangle> rec = null;
 		if (args.length > 0)
-			mainAlgo(args[0]);
+			rec = mainAlgo(args[0], args[1]);
 		else
-			mainAlgo("img-patchs2.png");
+			rec = mainAlgo("img-patchs2.png", args[1]);
+		
+		serialOutput(args[2], rec);
 		
 		
 	}
+	
+	static private void serialOutput(String baseName, ArrayList<Rectangle> towrite){
+		ObjectOutputStream write;
+		try {
+			write = new ObjectOutputStream(new FileOutputStream(baseName));
+			write.writeObject(towrite);
+			write.flush();
+			write.close();
 
-	static private void mainAlgo(String path) {
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	static private ArrayList<Rectangle> mainAlgo(String path, String couleurSticker) {
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(new File(path));
@@ -42,12 +61,16 @@ public class MainAnatole {
 		Image image = new Image(img);
 		image.Normalize();
 		img = image.getImg();
+		image.Save();
 
 		if (img != null) {
 			// faire la segmentation
 			Pt[][] tab;
-			if (seuil == null)
-				tab = Selection.selec(img, 0.05, 0.2, 0.20, 0.45, 0.45, 0.8);
+			if (couleurSticker.equals("1"))
+				tab = Selection.selec(img, 0.05, 0.2, 0.14, 0.45, 0.30, 0.8);
+			else if(couleurSticker.equals("2")){
+				tab = Selection.selec(img, 0.2, 1.0, 0.15, 1.01, 0.01, 0.3);
+			}
 			else
 				tab = Selection.selec(img, seuil);
 			
@@ -58,12 +81,14 @@ public class MainAnatole {
 			// faire la signature
 			ArrayList<Signature> signatures = Signe.signe(compoCo);
 
-			// trouver les coefficients de corrélation
+			// trouver les coefficients de corrï¿½lation
 			CompareSig cs = new CompareSig(signatures);
 			ArrayList<Double> coefficients = cs.compare();
 
-			// selectionner et en déduire le rectangle correspondant
-			ArrayList<Rectangle> Rec = cs.EstSelec(coefficients, 12, compoCo);
+			// selectionner et en dï¿½duire le rectangle correspondant
+			ArrayList<Rectangle> Rec = cs.EstSelec(coefficients, 12, compoCo, couleurSticker);
+			return Rec;
 		}
+		return new ArrayList<Rectangle>();
 	}
 }

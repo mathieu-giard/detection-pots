@@ -11,7 +11,8 @@ import pactutils.*;
 public class MainAlgo {
 	private BufferedImage img;
 
-	public MainAlgo(String path) {
+	public MainAlgo(String path, String couleurSticker) {
+		
 		try {
 			img = ImageIO.read(new File(path));
 

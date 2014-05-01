@@ -34,12 +34,12 @@ public class CompareSig {
 		return retour;
 	}
 	
-	public ArrayList<Rectangle> EstSelec(ArrayList<Double> list ,int seuil, ArrayList<ArrayList<Pt>> compoCo){
+	public ArrayList<Rectangle> EstSelec(ArrayList<Double> list ,int seuil, ArrayList<ArrayList<Pt>> compoCo, String nom){
 		ArrayList<Rectangle> result = new ArrayList<Rectangle>();
 		int i =0;
 		for (double d : list){
 			if ( d<seuil){ // bizarrement il faut mettre inf
-				Rectangle R = new Rectangle(compoCo.get(i));
+				Rectangle R = new Rectangle(compoCo.get(i), nom);
 				result.add(R);
 			}
 			i=i+1;

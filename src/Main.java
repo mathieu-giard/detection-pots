@@ -38,9 +38,9 @@ public class Main {
 
 		// On retravaille l'image avant le traitement
 		Image image = new Image(img);
-		System.out.println("Début de normalisation");
+		System.out.println("Dï¿½but de normalisation");
 		image.Normalize();
-		System.out.println("Début de sauvegarde");
+		System.out.println("Dï¿½but de sauvegarde");
 		image.Save();
 		img = image.getImg();
 		image.afficheTSL();
@@ -48,7 +48,7 @@ public class Main {
 		
 		if (img != null) {
 			// faire la segmentation
-			System.out.println("début de segmentation");
+			System.out.println("dï¿½but de segmentation");
 			Pt[][] tab;
 			if (seuil == null)
 				tab = Selection.selec(img, 0.85, 1, 0.05, 0.25, 0.45, 0.8);
@@ -58,7 +58,7 @@ public class Main {
 			PrintBooleanImage.print(tab, "imBool.png");
 
 			// faire les composantes connexes
-			System.out.println("Début de composantes connexes");
+			System.out.println("Dï¿½but de composantes connexes");
 			CompoConnexe<Pt> cc = new CompoConnexe<Pt>(tab);
 			ArrayList<ArrayList<Pt>> compoCo = cc.getCompo();
 
@@ -67,17 +67,17 @@ public class Main {
 
 			
 			// faire la signature
-			System.out.println("Début signature");
+			System.out.println("Dï¿½but signature");
 			ArrayList<Signature> signatures = Signe.signe(compoCo);
 
-			// trouver les coefficients de corrélation
+			// trouver les coefficients de corrï¿½lation
 			CompareSig cs = new CompareSig(signatures);
 			ArrayList<Double> coefficients = cs.compare();
 
 			System.out.println(coefficients);
 
-			// selectionner et en déduire le rectangle correspondant
-			ArrayList<Rectangle> Rec = cs.EstSelec(coefficients, 12, compoCo);
+			// selectionner et en dï¿½duire le rectangle correspondant
+			ArrayList<Rectangle> Rec = cs.EstSelec(coefficients, 12, compoCo, "1");
 
 			// on verifie visuellement que ce soit le bon:
 			image.DessinerLeSRectangleS(Rec);
